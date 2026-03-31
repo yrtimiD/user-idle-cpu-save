@@ -1,5 +1,5 @@
 [Unit]
-Description=User idle save oneshot service
+Description=User idle cpu save oneshot service
 After=default.target
 
 [Service]

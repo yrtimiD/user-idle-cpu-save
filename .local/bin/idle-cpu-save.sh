@@ -12,7 +12,7 @@ CPUPOWER_CMD=/usr/bin/cpupower
 SUDO_CMD=/usr/bin/sudo
 IDLE_THRESHOLD_MS=${IDLE_THRESHOLD_MS:-120000}
 ACTIVE_THRESHOLD_MS=${ACTIVE_THRESHOLD_MS:-20000}
-GOV_IDLE=${GOV_IDLE:-power_save}
+GOV_IDLE=${GOV_IDLE:-powersave}
 GOV_ACTIVE=${GOV_ACTIVE:-performance}
 DEBUG=${DEBUG:-}
 
@@ -39,7 +39,7 @@ fi
 
 debug "config: idle_threshold=${IDLE_THRESHOLD_MS}ms, active_threshold=${ACTIVE_THRESHOLD_MS}ms, idle_gov=${GOV_IDLE}, active_gov=${GOV_ACTIVE}"
 
-idle_ms=$({ "$XPRINTIDLE_CMD" 2>/dev/null || true; } )
+idle_ms=$("$XPRINTIDLE_CMD" 2>/dev/null || true)
 
 if ! [[ "$idle_ms" =~ ^[0-9]+$ ]]; then
   log "error: failed to read idle time (output: '$idle_ms')"
