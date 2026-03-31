@@ -1,0 +1,12 @@
+[Unit]
+Description=Run idle-cpu-save.service 2 minutes after login, then every 20s
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=20
+AccuracySec=1s
+Unit=idle-cpu-save.service
+Persistent=true
+
+[Install]
+WantedBy=timers.target
