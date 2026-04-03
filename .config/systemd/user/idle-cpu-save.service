@@ -6,7 +6,7 @@ After=default.target
 Type=oneshot
 ExecStart=%h/.local/bin/idle-cpu-save.sh
 Environment=IDLE_THRESHOLD_MS=120000
-Environment=ACTIVE_THRESHOLD_MS=20000
+Environment=ACTIVE_THRESHOLD_MS=10000
 Environment=GOV_IDLE=powersave
 Environment=GOV_ACTIVE=performance
 

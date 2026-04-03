@@ -11,7 +11,7 @@ XPRINTIDLE_CMD=/usr/bin/xprintidle
 CPUPOWER_CMD=/usr/bin/cpupower
 SUDO_CMD=/usr/bin/sudo
 IDLE_THRESHOLD_MS=${IDLE_THRESHOLD_MS:-120000}
-ACTIVE_THRESHOLD_MS=${ACTIVE_THRESHOLD_MS:-20000}
+ACTIVE_THRESHOLD_MS=${ACTIVE_THRESHOLD_MS:-10000}
 GOV_IDLE=${GOV_IDLE:-powersave}
 GOV_ACTIVE=${GOV_ACTIVE:-performance}
 DEBUG=${DEBUG:-}
@@ -46,19 +46,17 @@ if ! [[ "$idle_ms" =~ ^[0-9]+$ ]]; then
   exit 3
 fi
 
-old_state=unknown
+old_state=active
 if [ -f "$STATE_FILE" ]; then
   old_state=$(cat "$STATE_FILE") || true
 fi
 
-new_state=active
-threshold=$IDLE_THRESHOLD_MS
-if [ "$old_state" = "idle" ]; then
-  threshold=$ACTIVE_THRESHOLD_MS
-fi
-
-if [ "$idle_ms" -ge "$threshold" ]; then
+if [ "$old_state" = "idle" ] && [ $idle_ms -le $ACTIVE_THRESHOLD_MS ]; then
+  new_state=active
+elif [ "$old_state" = "active" ] && [ $idle_ms -ge $IDLE_THRESHOLD_MS ]; then
   new_state=idle
+else
+  new_state=$old_state
 fi
 
 if [ "$new_state" != "$old_state" ]; then
